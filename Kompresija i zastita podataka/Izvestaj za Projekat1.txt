@@ -1,0 +1,23 @@
+Projekat-1 se sa sastoji iz par delova.
+Prvi deo je uzimanje tekstualnog fajla koji se nalazi u istom direktorijumu kao i ovaj izveštaj (njegov naziv je Sample-text-file.txt). Zatim se računa entropija od tog tekstualnog file-a i ispisuje se u terminalu: Ukupna entropija fajla je: X, gde je X zapisan u formatu sa 4 decimale.
+
+Nakon toga se radi kompresija koda Shannon-Fano-a. Uzima se svaki karakter koji se pojavljuje u fajlu i smesta u strukturu Symbol koja ima value,probability i code  polja.  Prvo se pakuju samo vrednosti i  verovatnoće koje su prethodno definisane u klasi Entropija. Nakon toga vrši se sortiranje u opadajucem poretku po polju verovatnoća.Algoritam radi tako sto deli simbole u dve grupe, gde prva grupa dobija vrednost 0 a druga vrednost 1 i postupak se ponavlja sve dok u svakoj grupi ne ostane po jedan element.  Dalje, određuje se kod za svaku vrednost i program ispisuje u terminalu kod za svaku vrednost simbola.  Dalje se na osnovu tog koda pravi kodirani string koji se kompresuje u listu bajtova 8 znakova u jedan bajt (bajt = osnovna jedinica čuvanja u memoriji) i na kraju se upisuje u binarni file shannon_fano_compress.bin. U prvom redu ovog fajla se cuvaju kodne reci svakog simbola, dok u ostatak cini kompresija samog stringa kojeg smo napravili. Sledeći korak je dekompresija tog fajla. 
+
+Sledeći kod je Huffman-ov kod i proces je sledeći: 
+1) Pošto metoda u Huffman klasi buildHuffmanTree prima niz stringova a ne listu (zbog lakše implementacije), prvo pravimo niz stringova i smeštamo sve karaktere koje smo dobili u klasi Entropija. 
+2) Pozivamo metodu buildHuffmanTree koja nam pravi stablo(listu) nodes i vraća koren(početak te liste).  Pravi se tako što se uzimaju poslednja dva elementa sa najmanjim verovatnoćama, izbacuju se iz liste, jedan dobija code vrednost 0, drugi 1 i pravi se nov cvor koji se sastoji iz zbira njihovih verovatnoća, spojenim nazivima i pokazivačima left i right. Taj nov cvor se dodaje u tu listu cvorova, ponovo se sortira lista i u krug dok se ne dodje do 1 cvora u listi.
+3)  Dalje je procedura slična kao kod Shannon-Fano algoritma, kompresija, pakovanje u fajl i dekompresija.
+
+LZ77 algoritam:
+Prvo postavljamo window size za algoritam (5000). Program iz tog razloga malo i sporije radi jer mora da proveri 5000simbola unazad od trenutnog ali je stepen kompresije broj iznad 1(ima kompresije). Uzimamo naziv ulaznog txt fajla. Čitamo liniju po liniju iz tog fajla i vršimo kompresiju. Konstruisan je tuple sa tri atributa. Tuple za ovaj olgoritam moze biti u dva formate, ili (x,y) ili (x,y,z). Gde je ukoliko je (x,y) to znaci da Y simbol nema ponavljanja i da je X = 0. Dok kod (x,y,z) X=1 -> ima ponavljanja, y je pre koliko simbola je krenulo ponavljanje i z oznacava koliko ponavljanje traje.
+Upisujemo u izlazni fajl i nakon toga vršimo dekompresiju tog fajla, tako sto citamo redom kompresovani fajl i upisujemo odgovarajuce vrednosti.
+
+LZW algoritam:
+Uzimamo naziv ulaznog txt fajla. Čitamo liniju po liniju iz tog fajla i vršimo kompresiju. Kompresija se vrsi tako sto koristimo pomocnu strukturu-recnik. Prednost ovog algoritma je ta sto se recnik nigde ne pamti pa ne zauzima dodatni memorijski prostor. Prvo u recnik krenuci od indeksa 1 pakujemo sve jedinstvene karaktere, zatim od pocetka ulaznog niza proveravamo da li trenutni + naredni element(i) se nalazi u privremenom recniku. Trazimo najduze ponavljanje i zapisujemo rbr indeksa na kom se mestu nalazi to ponavljanje u recniku i to zapisujemo u izlaz. Zatim se u recnik doda podniz koji je bio ponovljen plus jedan karakter.   
+Upisujemo u izlazni fajl i nakon toga vršimo dekompresiju tog fajla. Dekompresija se vrsi tako sto iteracija upisivanje u recnik kasni jedan korak.
+
+Zatim određujemo stepen kompresije za svaki algoritam, određuje se tako što se podeli veličina ulaznog fajla sa dobijenim kompresovanim fajlom. Ispisuje se u terminalu za svaki algoritam njegov stepen kompresije.
+
+I na kraju se proverava da li su algoritmi za kompresiju dobro urađeni tako što se upoređuju originalni ulazni fajl i dobijeni fajlovi posle dekompresije.
+ 
+ Projekat je radjen u programskom jeziku Java.

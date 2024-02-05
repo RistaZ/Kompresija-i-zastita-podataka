@@ -1,0 +1,4 @@
+Posto je projekat radjen u programskom jeziku Java,potrebno je instalirati jdk na racunar (najpozeljnije je 21. verzija). 
+Zbog putanja sa file-ovima, najjednostavnija opcija bi bila koriscenje nekog okruzenja za javu kao sto je npr. Eclipse u kome je i  sam projekat radjen. Jednostavnim importom foldera
+(privlacenjem file-a preko precice Eclipsa) se otvara ceo projekat odakle se  moze Run-ovati. 
+Na windowsu crtl+f11.

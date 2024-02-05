@@ -1,0 +1,14 @@
+Prva faza ovog projekta obuhvatala je konstrukciju matrice H, kljucne za proces kodiranja i dekodiranja u LDPC kodovima. Matrica H ima n-k redova (u ovom slucaju 9), n kolona (15), gde je k=6. Parametri wc (broj redova u svakom bloku) i wr (sirina bloka kolona) su postavljeni na vrednosti 3 i 5. Proces generisanja matrice koristio je seed broj 83.
+Generisanje matrice se odvilo u tri koraka:
+1) Generisanje prvog bloka od wc redova od kog smo napravili jedinicnu matricu
+2) Zatim je generisan drugi blok od wc do wc*2 redova, pri cemu se u svakoj koloni tog bloka nalazi tacno jedna jedinica na slucajnom mestu.
+3) Slicno, poslednji blok je generisan na isti nacin kao i prethodni korak.
+
+U sledecem koraku, generisana je tabela korektora i sindroma. Generisanjem svih mogucih binarnih kombinacija od 15 cifara dobijena je matrica korektora. Nakon konstrukcije, tabela korektora je sortirana po broju jedinica u redovima, od najmanjeg do najveceg broja. Sindromi su izracunati koristeći formulu s = H * e^T, gde je e vektor greske, a rezultati su transponovani. Za svaki sindrom, pronadjen je vektor greske e minimalne tezine wh(e), odnosno, prvog pojavljivanja svakog jedinstvenog elementa iz sindroma. Konacna tabela dobijena je spajanjem jedinstvenih elemenata i njihovih korektora.
+
+Dalje racunano kodno rastojanje, tako sto je potrebno naci minimalan broj linearno zavisnih kolona matrice H. 
+Da nadjemo minimalnu linearnu zavisnost potrebno je za sve moguce kombinacije kolona, izracunati zbir redova onih elemenata koji pripadaju treutno selektovanoj koloni u toj iteraciji. Nakon toga se proverava da li su svi zbirovi jednaki nuli kada se primeni operacija %2. Kolone koje zadovoljavaju ovaj uslov su linearno zavisne, a trazi se najmanji broj kolona od svih kombinacija. Ovo odredjuje minimalno kodno rastojanje.
+
+Prvo, imamo pocetni vektor y koji predstavlja primljeni kod. Algoritam pokusava rekonstruisati originalni niz podataka x. Inicijalno, x se postavlja isto kao i y.
+Algoritam se izvrsava kroz nekoliko iteracija. U svakoj iteraciji prolazimo kroz svaki bit u vektoru x i pokusavamo azurirati njegovu vrednost. Za svaki bit, racunamo sumu susednih bitova (osim trenutnog bita). Na osnovu te sume i definisanih pragova th0 i th1 u nasem slucaju oba su 0.5, odlucujemo da li ce se vrednost bita promeniti ili ostati ista. Azuriranje se desava na osnovu broja nula i jedinica u okolini trenutnog bita. Ako je broj nula veci od odredjenog procenta (th0), postavljamo trenutni bit na 0. Ako je broj jedinica veci od odredjenog procenta (th1), postavljamo trenutni bit na 1. Inace, vrednost bita ostaje nepromenjena. Nakon prolaska kroz sve bitove, proveravamo da li se vektor x promenio u odnosu na pocetni vektor y. Ako se nije promenio, to znaci da smo dostigli stacionarno stanje i prekidamo iteracije.
+Algoritam se ponavlja kroz niz iteracija ili do postizanja stacionarnog stanja ili do dostizanja maksimalnog broja iteracija.
